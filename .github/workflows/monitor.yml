@@ -1,0 +1,8 @@
+stock-monitor/
+ ├── .github/workflows/
+ │     ├── msft.yml
+ │     ├── tsla.yml
+ │     └── backup.yml
+ ├── scripts/
+ │     ├── fetch_msft.py
+ │     ├── fetch_backup.ps1
