@@ -13,9 +13,16 @@ jobs:
       - name: Get MSFT price (Yahoo stable endpoint)
         run: |
           curl -s \
-          -H "User-Agent: Mozilla/5.0" \
-          "https://query2.finance.yahoo.com/v8/finance/chart/MSFT" > data.json
+            -H "User-Agent: Mozilla/5.0" \
+            "https://query2.finance.yahoo.com/v8/finance/chart/MSFT" > data.json
 
       - name: Extract price and save CSV
         run: |
-          PRICE=$(cat data.json | jq '.chart.result[0].meta.regularMarketPrice')
+          PRICE=$(jq -r '.chart.result[0].meta.regularMarketPrice' data.json)
+          DATE=$(date +%Y-%m-%d)
+          echo "$DATE,$PRICE" >> data.csv
+
+      - name: Show result
+        run: |
+          echo "Valore estratto:"
+          cat data.csv
