@@ -10,5 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Call API
-        run: echo "Hello"
+      - name: Call Aletheia API
+        run: |
+          curl "https://api.aletheiaapi.com/StockData?symbol=MSFT&apikey=${{ secrets.API_KEY }}" > data.json
+
+      - name: Show result
+        run: cat data.json
