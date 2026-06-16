@@ -11,4 +11,3 @@ jobs:
     steps:
       - name: Call API
         run: echo "Hello"
-``
