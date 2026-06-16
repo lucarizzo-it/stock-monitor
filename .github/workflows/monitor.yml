@@ -17,7 +17,7 @@ jobs:
         run: |
           curl -s \
             -H "User-Agent: Mozilla/5.0" \
-            "https://query1.finance.yahoo.com/v7/finance/quote?symbols=U3O8.DE" > U308.json
+            "https://query2.finance.yahoo.com/v8/finance/chart/U3O8.DE" > U308.json
 
           curl -s \
             -H "User-Agent: Mozilla/5.0" \
