@@ -1,8 +1,14 @@
-stock-monitor/
- ├── .github/workflows/
- │     ├── msft.yml
- │     ├── tsla.yml
- │     └── backup.yml
- ├── scripts/
- │     ├── fetch_msft.py
- │     ├── fetch_backup.ps1
+name: Monitor MSFT
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call API
+        run: echo "Hello"
+``
