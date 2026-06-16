@@ -10,9 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get MSFT price from Yahoo
+    - name: Get MSFT price from Yahoo
         run: |
-          curl -s "https://query1.finance.yahoo.com/v7/finance/quote?symbols=MSFT" > data.json
+          curl -s \
+          -H "User-Agent: Mozilla/5.0" \
+          -H "Accept: application/json" \
+          "https://query1.finance.yahoo.com/v7/finance/quote?symbols=MSFT" > data.json
 
       - name: Show result
         run: cat data.json
