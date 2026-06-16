@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get MSFT price (Yahoo stable endpoint)
+      - name: Get MSFT price (Yahoo stable endpoint)
         run: |
           curl -s \
+          -H "User-Agent: Mozilla/5.0" \
           "https://query2.finance.yahoo.com/v8/finance/chart/MSFT" > data.json
 
-      - name: Show result
-        run: cat data.json
+      - name: Extract price and save CSV
+        run: |
+          PRICE=$(cat data.json | jq '.chart.result[0].meta.regularMarketPrice')
