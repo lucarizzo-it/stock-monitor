@@ -1,4 +1,4 @@
-name: Monitor MSFT
+name: Monitor Stocks
 
 on:
   schedule:
@@ -10,19 +10,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get MSFT price (Yahoo stable endpoint)
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get prices from Yahoo
         run: |
           curl -s \
             -H "User-Agent: Mozilla/5.0" \
-            "https://query2.finance.yahoo.com/v8/finance/chart/MSFT" > data.json
+            "https://query2.finance.yahoo.com/v8/finance/chart/U308.DE" > U308.json
 
-      - name: Extract price and save CSV
+          curl -s \
+            -H "User-Agent: Mozilla/5.0" \
+            "https://query2.finance.yahoo.com/v8/finance/chart/XDWT.DE" > XDWT.json
+
+          curl -s \
+            -H "User-Agent: Mozilla/5.0" \
+            "https://query2.finance.yahoo.com/v8/finance/chart/ASWG.DE" > ASWG.json
+
+          curl -s \
+            -H "User-Agent: Mozilla/5.0" \
+            "https://query2.finance.yahoo.com/v8/finance/chart/EXUS.DE" > EXUS.json
+
+      - name: Extract prices and save CSV
         run: |
-          PRICE=$(jq -r '.chart.result[0].meta.regularMarketPrice' data.json)
           DATE=$(date +%Y-%m-%d)
-          echo "$DATE,$PRICE" >> data.csv
+
+          P1=$(jq -r '.chart.result[0].meta.regularMarketPrice' U308.json)
+          P2=$(jq -r '.chart.result[0].meta.regularMarketPrice' XDWT.json)
+          P3=$(jq -r '.chart.result[0].meta.regularMarketPrice' ASWG.json)
+          P4=$(jq -r '.chart.result[0].meta.regularMarketPrice' EXUS.json)
+
+          echo "$DATE,U308.DE,$P1" >> data.csv
+          echo "$DATE,XDWT.DE,$P2" >> data.csv
+          echo "$DATE,ASWG.DE,$P3" >> data.csv
+          echo "$DATE,EXUS.DE,$P4" >> data.csv
+
+      - name: Commit file
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data.csv
+          git commit -m "update stock data" || echo "no changes"
+          git push
 
       - name: Show result
-        run: |
-          echo "Valore estratto:"
-          cat data.csv
+        run: cat data.csv
